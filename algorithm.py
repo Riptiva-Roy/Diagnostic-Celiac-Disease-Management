@@ -58,10 +58,17 @@ print(accuracy)
 # Example: Collecting user input for the features
 print("Please enter the following details:")
 
-user_input = np.array([4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 55, 5, 5, 5, 5, 5, 5, 5])
+user_input = []
 
-# Reshape the user input to be 2D
-user_input_reshaped = user_input.reshape(1, -1)
+# Loop over the columns of X
+for column in X.columns:
+    # Prompt the user to enter the value for each feature
+    value = float(input(f"Enter the value for {column}: "))
+    # Append the input value to the user_input list
+    user_input.append(value)
+
+# Convert the user input to a NumPy array and reshape it to be 2D
+user_input_reshaped = np.array(user_input).reshape(1, -1)
 
 # Convert user input to DataFrame with feature names
 user_input_df = pd.DataFrame(user_input_reshaped, columns=X.columns)
@@ -72,13 +79,13 @@ scaler = StandardScaler()  # Normally you'd load a fitted scaler
 # For demonstration, let's assume no scaling (remove if you're scaling the input)
 user_input_scaled = user_input_df  # Remove this if you're applying scaling
 
-# Step 3: Get the probability of PCOS
+# Get the probability of PCOS
 probabilities = rfc.predict_proba(user_input_scaled)
 
 # Extract probability for PCOS (class 1)
 probability_pcos = probabilities[0][1]  # Probability of PCOS (class 1)
 probability_non_pcos = probabilities[0][0]  # Probability of non-PCOS (class 0)
 
-# Step 4: Output the result
+# Output the result
 print(f"Probability of PCOS: {probability_pcos * 100:.2f}%")
 print(f"Probability of non-PCOS: {probability_non_pcos * 100:.2f}%")
